@@ -19,12 +19,14 @@ interface HeaderProps {
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
   pendingApprovalsCount?: number;
+  onOpenPublicForm?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
-  pendingApprovalsCount = 3
+  pendingApprovalsCount = 3,
+  onOpenPublicForm,
 }) => {
   const { theme, toggleTheme } = useTheme();
 
@@ -89,6 +91,17 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Right Controls */}
       <div className="ml-auto shrink-0 flex items-center gap-2.5">
+        {/* Public Form Onboarding Button */}
+        {onOpenPublicForm && (
+          <button
+            onClick={onOpenPublicForm}
+            title="Preview Public Donor Onboarding Form"
+            className="flex items-center gap-1.5 h-9.5 px-3 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs font-bold text-[var(--ink)] cursor-pointer hover:border-[var(--ink)] transition-colors whitespace-nowrap"
+          >
+            <span>Public Form</span>
+          </button>
+        )}
+
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}

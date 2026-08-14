@@ -10,10 +10,10 @@ import { ApprovalsPage } from '@/pages/ApprovalsPage';
 import { TasksPage } from '@/pages/TasksPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { UsersPage } from '@/pages/UsersPage';
+import { NewDonorPage } from '@/pages/NewDonorPage';
+import { PublicOnboardingPage } from '@/pages/PublicOnboardingPage';
 import { LogInteractionModal } from '@/components/modals/LogInteractionModal';
 import { NewTaskModal } from '@/components/modals/NewTaskModal';
-import { NewDonorModal } from '@/components/modals/NewDonorModal';
-import { DonorOnboardingPreviewModal } from '@/components/modals/DonorOnboardingPreviewModal';
 import { EmailDrawer } from '@/components/modals/EmailDrawer';
 import { 
   INITIAL_DONORS, 
@@ -29,6 +29,7 @@ export function AppContent() {
   const [activeTab, setActiveTab] = useState<NavTab>('Dashboard');
   const [selectedDonorId, setSelectedDonorId] = useState<string>('foodcorp-sa');
   const [isDetailView, setIsDetailView] = useState(false);
+  const [viewMode, setViewMode] = useState<'crm' | 'new-donor' | 'public-onboarding'>('crm');
 
   // Core Data States
   const [donors, setDonors] = useState<Donor[]>(INITIAL_DONORS);
@@ -61,42 +62,44 @@ export function AppContent() {
   const [logModalOpen, setLogModalOpen] = useState(false);
   const [logModalTargetDonor, setLogModalTargetDonor] = useState<string>('FoodCorp SA');
   const [newTaskModalOpen, setNewTaskModalOpen] = useState(false);
-  const [newDonorModalOpen, setNewDonorModalOpen] = useState(false);
-  const [donorToEdit, setDonorToEdit] = useState<Donor | null>(null);
-  const [onboardingPreviewOpen, setOnboardingPreviewOpen] = useState(false);
 
   const handleOpenNewDonor = () => {
-    setDonorToEdit(null);
-    setNewDonorModalOpen(true);
+    setViewMode('new-donor');
   };
 
-  const handleOpenEditDonor = (donor: Donor) => {
-    setDonorToEdit(donor);
-    setNewDonorModalOpen(true);
-  };
+  const handleSaveDonorFromPage = (donorData: Partial<Donor>) => {
+    const created: Donor = {
+      id: donorData.id || `donor_${Date.now()}`,
+      name: donorData.name || 'New Donor Organisation',
+      tradingName: donorData.tradingName || donorData.name,
+      type: donorData.type || 'Manufacturer',
+      status: donorData.status || 'Pending Review',
+      manager: donorData.manager || 'Nomsa Khumalo',
+      regions: donorData.regions || ['JHB'],
+      donationTypes: donorData.donationTypes || ['Dry Goods'],
+      frequency: donorData.frequency || 'Weekly',
+      lastInteraction: 'Just created',
+      lastInteractionType: 'note',
+      followUpDate: '28 Aug 2026',
+      overdue: false,
+      ...donorData,
+    } as Donor;
 
-  const handleSaveDonor = (donorData: Partial<Donor>) => {
-    if (donorToEdit) {
-      setDonors((prev) =>
-        prev.map((d) => (d.id === donorToEdit.id ? ({ ...d, ...donorData } as Donor) : d))
-      );
-    } else {
-      const created: Donor = {
-        id: donorData.id || `donor_${Date.now()}`,
-        name: donorData.name || 'New Donor',
-        type: donorData.type || 'Manufacturer',
-        status: donorData.status || 'Pending Review',
-        manager: donorData.manager || 'Nomsa Khumalo',
-        regions: donorData.regions || ['JHB'],
-        frequency: donorData.frequency || 'Weekly',
-        lastInteraction: 'Just created',
-        lastInteractionType: 'note',
-        followUpDate: 'Next week',
-        overdue: false,
-        ...donorData,
-      } as Donor;
-      setDonors((prev) => [created, ...prev]);
-    }
+    const newApproval: ApprovalRecord = {
+      id: `s_${Date.now()}`,
+      name: created.name,
+      type: created.type,
+      regions: created.regions.join(' · '),
+      source: 'Manual Capture',
+      requester: 'Keegan Roux',
+      submittedAgo: 'just now',
+      state: 'Pending',
+    };
+
+    setDonors((prev) => [created, ...prev]);
+    setApprovals((prev) => [newApproval, ...prev]);
+    setViewMode('crm');
+    setActiveTab('Donors');
   };
 
   const selectedDonor = donors.find((d) => d.id === selectedDonorId) || donors[0];
@@ -106,6 +109,7 @@ export function AppContent() {
   const handleNavigateToDonor = (id: string) => {
     setSelectedDonorId(id);
     setIsDetailView(true);
+    setViewMode('crm');
     setActiveTab('Donors');
   };
 
@@ -191,6 +195,29 @@ export function AppContent() {
     setEmails((prev) => [...prev, newEmail]);
   };
 
+  // If viewing standalone Public Onboarding Form
+  if (viewMode === 'public-onboarding') {
+    return (
+      <PublicOnboardingPage
+        onClose={() => setViewMode('crm')}
+        onSubmitSuccess={() => {
+          // Add public application to approvals
+          const publicApproval: ApprovalRecord = {
+            id: `s_${Date.now()}`,
+            name: 'Fresh Fields Wholesale',
+            type: 'Manufacturer',
+            regions: 'CPT · EC',
+            source: 'Public Form',
+            requester: null,
+            submittedAgo: 'just now',
+            state: 'Pending',
+          };
+          setApprovals((prev) => [publicApproval, ...prev]);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="h-screen flex flex-col bg-[var(--page)] text-[var(--ink)] overflow-hidden">
       {/* Header */}
@@ -198,13 +225,15 @@ export function AppContent() {
         activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
+          setViewMode('crm');
           if (tab === 'Donors' && isDetailView) {
-            // Keep detail view if clicking Donors tab while on detail
+            // Keep detail view
           } else {
             setIsDetailView(false);
           }
         }}
         pendingApprovalsCount={pendingApprovalsCount}
+        onOpenPublicForm={() => setViewMode('public-onboarding')}
       />
 
       {/* Main Body */}
@@ -212,72 +241,79 @@ export function AppContent() {
         <SideRail isOpen={railOpen} onToggle={() => setRailOpen(!railOpen)} />
 
         {/* Dynamic Route View */}
-        {activeTab === 'Dashboard' && (
-          <DashboardPage
-            onNewDonorClick={handleOpenNewDonor}
-            onNavigateToDonor={handleNavigateToDonor}
+        {viewMode === 'new-donor' ? (
+          <NewDonorPage
+            onBack={() => setViewMode('crm')}
+            onSave={handleSaveDonorFromPage}
           />
-        )}
+        ) : (
+          <>
+            {activeTab === 'Dashboard' && (
+              <DashboardPage
+                onNewDonorClick={handleOpenNewDonor}
+                onNavigateToDonor={handleNavigateToDonor}
+              />
+            )}
 
-        {activeTab === 'Donors' && !isDetailView && (
-          <DonorsPage
-            donors={donors}
-            onNewDonorClick={handleOpenNewDonor}
-            onPreviewOnboardingClick={() => setOnboardingPreviewOpen(true)}
-            onSelectDonor={(id) => {
-              setSelectedDonorId(id);
-              setIsDetailView(true);
-            }}
-            onEditDonorClick={handleOpenEditDonor}
-            onLogInteractionClick={(name) => {
-              setLogModalTargetDonor(name);
-              setLogModalOpen(true);
-            }}
-          />
-        )}
+            {activeTab === 'Donors' && !isDetailView && (
+              <DonorsPage
+                donors={donors}
+                onNewDonorClick={handleOpenNewDonor}
+                onPreviewOnboardingClick={() => setViewMode('public-onboarding')}
+                onSelectDonor={(id) => {
+                  setSelectedDonorId(id);
+                  setIsDetailView(true);
+                }}
+                onEditDonorClick={() => setViewMode('new-donor')}
+                onLogInteractionClick={(name) => {
+                  setLogModalTargetDonor(name);
+                  setLogModalOpen(true);
+                }}
+              />
+            )}
 
-        {activeTab === 'Donors' && isDetailView && (
-          <DonorDetailPage
-            donor={selectedDonor}
-            timeline={timeline}
-            tasks={tasks.filter((t) => t.donor === selectedDonor.name || t.donor === 'FoodCorp SA')}
-            onBack={() => setIsDetailView(false)}
-            onOpenEmailDrawer={() => setEmailDrawerOpen(true)}
-            onOpenLogModal={() => setLogModalOpen(true)}
-            onToggleTask={handleToggleTask}
-          />
-        )}
+            {activeTab === 'Donors' && isDetailView && (
+              <DonorDetailPage
+                donor={selectedDonor}
+                timeline={timeline}
+                tasks={tasks.filter((t) => t.donor === selectedDonor.name || t.donor === 'FoodCorp SA')}
+                onBack={() => setIsDetailView(false)}
+                onOpenEmailDrawer={() => setEmailDrawerOpen(true)}
+                onOpenLogModal={() => setLogModalOpen(true)}
+                onToggleTask={handleToggleTask}
+              />
+            )}
 
-        {activeTab === 'Approvals' && (
-          <ApprovalsPage
-            approvals={approvals}
-            onApprove={handleApproveSubmission}
-            onReject={handleRejectSubmission}
-            onNavigateToDonor={handleNavigateToDonor}
-          />
-        )}
+            {activeTab === 'Approvals' && (
+              <ApprovalsPage
+                approvals={approvals}
+                onApprove={handleApproveSubmission}
+                onReject={handleRejectSubmission}
+                onNavigateToDonor={handleNavigateToDonor}
+              />
+            )}
 
-        {activeTab === 'Tasks' && (
-          <TasksPage
-            tasks={tasks}
-            donors={donors}
-            onToggleTask={handleToggleTask}
-            onCreateTask={handleCreateTask}
-            onNavigateToDonor={handleNavigateToDonor}
-          />
-        )}
+            {activeTab === 'Tasks' && (
+              <TasksPage
+                tasks={tasks}
+                donors={donors}
+                onToggleTask={handleToggleTask}
+                onCreateTask={handleCreateTask}
+                onNavigateToDonor={handleNavigateToDonor}
+              />
+            )}
 
-        {activeTab === 'Reports' && (
-          <ReportsPage />
-        )}
+            {activeTab === 'Reports' && <ReportsPage />}
 
-        {activeTab === 'Users' && (
-          <UsersPage
-            users={users}
-            onAddUser={handleAddUser}
-            onUpdateUserRole={handleUpdateUserRole}
-            onToggleUserActive={handleToggleUserActive}
-          />
+            {activeTab === 'Users' && (
+              <UsersPage
+                users={users}
+                onAddUser={handleAddUser}
+                onUpdateUserRole={handleUpdateUserRole}
+                onToggleUserActive={handleToggleUserActive}
+              />
+            )}
+          </>
         )}
       </div>
 
@@ -304,18 +340,6 @@ export function AppContent() {
         donors={donors}
         onClose={() => setNewTaskModalOpen(false)}
         onCreate={handleCreateTask}
-      />
-
-      <NewDonorModal
-        isOpen={newDonorModalOpen}
-        donorToEdit={donorToEdit}
-        onClose={() => { setNewDonorModalOpen(false); setDonorToEdit(null); }}
-        onSave={handleSaveDonor}
-      />
-
-      <DonorOnboardingPreviewModal
-        isOpen={onboardingPreviewOpen}
-        onClose={() => setOnboardingPreviewOpen(false)}
       />
     </div>
   );
