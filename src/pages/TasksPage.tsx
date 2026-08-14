@@ -301,7 +301,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   </span>
 
                   {/* Assignee / Completed By */}
-                  <span className="ml-auto inline-flex items-center gap-1.75 pl-0.5">
+                  <span className="inline-flex items-center gap-1.75 pl-0.5">
                     <span
                       className="w-5.5 h-5.5 rounded-full text-white text-[9px] font-bold flex items-center justify-center shrink-0"
                       style={{ backgroundColor: avatarBg }}

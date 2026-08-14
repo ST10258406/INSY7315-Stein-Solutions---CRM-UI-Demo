@@ -414,7 +414,7 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                             setOpenMenuId(openMenuId === donor.id ? null : donor.id);
                           }}
                           title="Row actions"
-                          className="w-8 h-8 rounded-full border border-transparent bg-transparent flex items-center justify-center cursor-pointer ml-auto hover:border-[var(--border)] hover:bg-[var(--hover)] transition-colors"
+                          className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--card)] flex items-center justify-center cursor-pointer ml-auto hover:border-[var(--ink)] hover:bg-[var(--hover)] transition-colors"
                         >
                           <MoreHorizontal className="w-4 h-4 text-[var(--icon)]" />
                         </button>
@@ -422,16 +422,16 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                         {openMenuId === donor.id && (
                           <div
                             onClick={(e) => e.stopPropagation()}
-                            className="absolute top-[46px] right-3.5 z-20 w-44 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-[0_12px_28px_rgba(20,20,15,0.16)] flex flex-col gap-0.5 text-left"
+                            className="absolute top-[46px] right-3.5 z-20 w-52 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-[0_12px_28px_rgba(20,20,15,0.16)] flex flex-col gap-0.5 text-left"
                           >
                             <button
                               onClick={() => {
                                 setOpenMenuId(null);
                                 onSelectDonor(donor.id);
                               }}
-                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)]"
+                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)] whitespace-nowrap"
                             >
-                              <Eye className="w-3.75 h-3.75 text-[var(--icon)]" />
+                              <Eye className="w-3.75 h-3.75 text-[var(--icon)] shrink-0" />
                               <span>View Profile</span>
                             </button>
                             <button
@@ -439,9 +439,9 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                                 setOpenMenuId(null);
                                 onEditDonorClick(donor);
                               }}
-                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)]"
+                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)] whitespace-nowrap"
                             >
-                              <Edit3 className="w-3.75 h-3.75 text-[var(--icon)]" />
+                              <Edit3 className="w-3.75 h-3.75 text-[var(--icon)] shrink-0" />
                               <span>Edit Donor</span>
                             </button>
                             <button
@@ -449,9 +449,9 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                                 setOpenMenuId(null);
                                 onLogInteractionClick(donor.name);
                               }}
-                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)]"
+                              className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)] whitespace-nowrap"
                             >
-                              <MessageSquare className="w-3.75 h-3.75 text-[var(--icon)]" />
+                              <MessageSquare className="w-3.75 h-3.75 text-[var(--icon)] shrink-0" />
                               <span>Log Interaction</span>
                             </button>
                           </div>

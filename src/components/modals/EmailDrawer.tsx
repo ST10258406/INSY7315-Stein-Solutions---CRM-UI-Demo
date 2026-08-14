@@ -176,8 +176,8 @@ export const EmailDrawer: React.FC<EmailDrawerProps> = ({
                   {em.signature && (
                     <div className="mt-3.5 p-3 border-l-3 border-[#FADF01] bg-[var(--field)] rounded-r-xl flex items-center gap-3">
                       <img
-                        src="/assets/avatar-keegan.svg"
-                        alt=""
+                        src="/assets/avatar-keegan.jpg"
+                        alt="Keegan"
                         className="w-10.5 h-10.5 rounded-full object-cover block"
                       />
                       <div className="leading-snug">

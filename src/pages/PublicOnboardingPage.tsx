@@ -8,15 +8,9 @@ import {
   Edit3, 
   CheckCircle2, 
   X,
-  FileText,
-  Building2,
-  Users,
-  MapPin,
-  Truck,
-  ShieldCheck,
-  PenTool
+  FileText
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import logoImg from '@/assets/sa-harvest-logo.png';
 
 interface PublicOnboardingPageProps {
   onClose?: () => void;
@@ -67,8 +61,8 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
 
   // Step 4: Donation
   const [pickupAddress, setPickupAddress] = useState('Warehouse 3, 14 Loop Street, Bo-Kaap, Cape Town');
-  const [selectedRegions, setSelectedRegions] = useState<string[]>(['CPT', 'EC']);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(['Fruit', 'Vegetables', 'Dry Goods']);
+  const [selectedRegions, setSelectedRegions] = useState<Record<string, boolean>>({ CPT: true, EC: true });
+  const [selectedTypes, setSelectedTypes] = useState<Record<string, boolean>>({ Fruit: true, Vegetables: true, 'Dry Goods': true });
   const [frequency, setFrequency] = useState('Weekly');
   const [logisticsNotes, setLogisticsNotes] = useState('Contact gate on arrival. Collections weekdays before 14:00.');
 
@@ -85,12 +79,12 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-  const toggleChip = (item: string, list: string[], setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-    if (list.includes(item)) {
-      setter(list.filter((x) => x !== item));
-    } else {
-      setter([...list, item]);
-    }
+  const toggleRegion = (r: string) => {
+    setSelectedRegions((prev) => ({ ...prev, [r]: !prev[r] }));
+  };
+
+  const toggleType = (t: string) => {
+    setSelectedTypes((prev) => ({ ...prev, [t]: !prev[t] }));
   };
 
   const validateStep = (s: number) => {
@@ -190,69 +184,77 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] text-[var(--ink)] flex flex-col items-center justify-center p-6 text-center animate-pop">
-        <div className="w-18 h-18 rounded-3xl bg-[#E5F4E9] flex items-center justify-center text-[#1E6E3C] mb-5 shadow-lg">
-          <CheckCircle2 className="w-10 h-10" />
+      <div style={{ minHeight: '100vh', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: '#16160F', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
+        <div style={{ width: '72px', height: '72px', borderRadius: '24px', background: '#E5F4E9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1E6E3C', marginBottom: '20px' }}>
+          <CheckCircle2 size={40} />
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-[var(--ink)] mb-2">
+        <h1 style={{ margin: '0 0 8px', fontSize: '28px', fontWeight: 800, letterSpacing: '-0.6px' }}>
           Application Submitted!
         </h1>
-        <p className="text-base text-[var(--muted)] max-w-md font-medium leading-relaxed mb-6">
+        <p style={{ margin: '0 0 24px', maxWidth: '440px', fontSize: '15px', lineHeight: 1.55, color: '#82827A', fontWeight: 500 }}>
           Thank you for applying to partner with S.A. Harvest. Our team will review your application and be in touch shortly.
         </p>
-        <Button variant="default" className="h-12 px-8 text-sm" onClick={onClose}>
+        <button
+          onClick={onClose}
+          style={{ height: '48px', padding: '0 32px', borderRadius: '24px', border: 'none', background: '#FADF01', fontFamily: 'inherit', fontSize: '14px', fontWeight: 700, color: '#16160F', cursor: 'pointer' }}
+        >
           Return to CRM
-        </Button>
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] font-sans text-[var(--ink)] flex flex-col relative">
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: '#16160F', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       {onClose && (
         <button
           onClick={onClose}
           title="Close preview"
-          className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full border border-[var(--border)] bg-[#FFFFFF] flex items-center justify-center text-[var(--icon)] hover:border-[var(--ink)] cursor-pointer"
+          style={{ position: 'absolute', top: '24px', right: '24px', zIndex: 50, width: '40px', height: '40px', borderRadius: '50%', border: '1px solid #E4E4DE', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
         >
-          <X className="w-5 h-5" />
+          <X size={18} style={{ margin: 'auto' }} />
         </button>
       )}
 
       {/* Header */}
-      <header className="flex flex-col items-center gap-3.5 px-6 pt-11 pb-2.5 text-center">
+      <header style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px', padding: '44px 24px 10px', textAlign: 'center' }}>
         <img
-          src="/assets/sa-harvest-logo.svg"
-          alt="S.A. Harvest"
-          className="w-19.5 h-19.5 rounded-2xl object-cover block shadow-sm border border-[var(--border)]"
+          src={logoImg}
+          alt="S.A. Harvest — Rescuing food, fighting hunger"
+          style={{ width: '78px', height: '78px', borderRadius: '18px', objectFit: 'cover', display: 'block' }}
         />
         <div>
-          <div className="text-2xl font-extrabold tracking-tight text-[var(--ink)]">S.A. Harvest</div>
-          <div className="text-[10.5px] font-bold tracking-[2px] text-[var(--muted)] mt-0.5">
-            DONOR ONBOARDING
-          </div>
+          <div style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.6px' }}>S.A. Harvest</div>
+          <div style={{ fontSize: '10.5px', fontWeight: 700, letterSpacing: '2px', color: '#82827A', marginTop: '2px' }}>DONOR ONBOARDING</div>
         </div>
-        <p className="m-0 max-w-[460px] text-[14.5px] leading-relaxed text-[var(--muted)] font-medium">
+        <p style={{ margin: 0, maxWidth: '460px', fontSize: '14.5px', lineHeight: 1.55, color: '#82827A', fontWeight: 500 }}>
           Partner with us to fight food insecurity in South Africa.
         </p>
       </header>
 
       {/* Main Container */}
-      <main className="w-full max-w-[860px] mx-auto px-6 py-7 pb-15 flex-1">
+      <main style={{ width: '100%', maxWidth: '860px', margin: '0 auto', padding: '28px 24px 60px', flex: 1 }}>
         {/* Step Wizard Progress Bar */}
-        <div className="flex items-start mb-7">
+        <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '28px' }}>
           {STEPS.map((label, i) => {
             const stepNum = i + 1;
             const isDone = stepNum < step;
             const isCurrent = stepNum === step;
 
             return (
-              <div key={label} className="flex-1 relative flex flex-col items-center gap-1.75 min-w-0">
+              <div key={label} style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '7px', minWidth: 0 }}>
                 {i > 0 && (
                   <div
-                    className={`absolute top-4 right-1/2 w-full h-0.5 -mr-4 z-0 ${
-                      stepNum <= step ? 'bg-[#16160F]' : 'bg-[var(--border)]'
-                    }`}
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '50%',
+                      width: '100%',
+                      height: '2px',
+                      marginRight: '16px',
+                      background: stepNum <= step ? '#16160F' : '#E4E4DE',
+                      zIndex: 0,
+                    }}
                   />
                 )}
                 <button
@@ -260,20 +262,34 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                     setErrors({});
                     setStep(stepNum);
                   }}
-                  className={`relative z-1 w-8.25 h-8.25 rounded-full flex items-center justify-center font-extrabold text-[12.5px] cursor-pointer transition-all ${
-                    isCurrent
-                      ? 'bg-[#FADF01] text-[#16160F] shadow-[0_2px_8px_rgba(250,223,1,0.5)]'
-                      : isDone
-                      ? 'bg-[#16160F] text-[#FADF01]'
-                      : 'border border-[var(--border)] bg-[#FFFFFF] text-[var(--muted2)]'
-                  }`}
+                  style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    width: '33px',
+                    height: '33px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+                    fontSize: '12.5px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    border: isCurrent ? 'none' : isDone ? 'none' : '1.5px solid #E4E4DE',
+                    background: isCurrent ? '#FADF01' : isDone ? '#16160F' : '#FFFFFF',
+                    color: isCurrent ? '#16160F' : isDone ? '#FADF01' : '#9A9A90',
+                    boxShadow: isCurrent ? '0 2px 8px rgba(250,223,1,0.5)' : 'none',
+                  }}
                 >
-                  {isDone ? <Check className="w-3.5 h-3.5 text-[#FADF01] stroke-[3]" /> : stepNum}
+                  {isDone ? <Check size={14} strokeWidth={3} /> : stepNum}
                 </button>
                 <span
-                  className={`text-[10.5px] whitespace-nowrap ${
-                    isCurrent ? 'font-extrabold text-[var(--ink)]' : 'font-semibold text-[var(--muted2)]'
-                  }`}
+                  style={{
+                    fontSize: '10.5px',
+                    fontWeight: isCurrent ? 800 : 600,
+                    color: isCurrent ? '#16160F' : '#9A9A90',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   {label}
                 </span>
@@ -283,75 +299,135 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
         </div>
 
         {/* Wizard Form Card */}
-        <div className="bg-[var(--soft)] border border-[var(--border)] rounded-2xl p-7.5 px-8 shadow-[0_1px_3px_var(--shadow)]">
+        <div style={{ background: '#F6F6F3', border: '1px solid #E4E4DE', borderRadius: '16px', padding: '30px 32px 26px', boxShadow: '0 1px 3px rgba(20,20,15,0.05)' }}>
           {/* STEP 1: Company Info */}
           {step === 1 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Company Information
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
-                Tell us about your company. Fields marked <span className="text-[#D4373A]">*</span> are required.
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
+                Tell us about your company. Fields marked <span style={{ color: '#D4373A' }}>*</span> are required.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Company Name <span className="text-[#D4373A]">*</span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Company Name <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="e.g. Fresh Fields Wholesale"
-                    className={`h-11.5 px-3.5 rounded-xl border ${
-                      errors.companyName ? 'border-[#D4373A] bg-[#FDF6F6]' : 'border-[var(--border)] bg-[#FFFFFF]'
-                    } outline-none text-[13.5px] font-medium text-[var(--ink)]`}
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: errors.companyName ? '1.5px solid #D4373A' : '1.5px solid #E4E4DE', background: errors.companyName ? '#FDF6F6' : '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                   {errors.companyName && (
-                    <span className="text-[11.5px] font-semibold text-[#D4373A]">
+                    <span style={{ fontSize: '11.5px', color: '#D4373A', fontWeight: 600 }}>
                       Company name is required.
                     </span>
                   )}
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Company Type <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Company Type <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <select
                     value={companyType}
                     onChange={(e) => setCompanyType(e.target.value)}
-                    className="h-11.5 px-3 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)] cursor-pointer"
+                    style={{ height: '46px', padding: '0 12px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%', cursor: 'pointer' }}
                   >
-                    <option value="Wholesaler">Wholesaler</option>
-                    <option value="Retailer">Retailer</option>
-                    <option value="Manufacturer">Manufacturer</option>
-                    <option value="Farm / Producer">Farm / Producer</option>
-                    <option value="Hospitality">Hospitality</option>
+                    <option>Wholesaler</option>
+                    <option>Retailer</option>
+                    <option>Manufacturer</option>
+                    <option>Farm / Producer</option>
+                    <option>Hospitality</option>
+                    <option>Financial Services</option>
+                    <option>Other</option>
                   </select>
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Website <span className="font-normal text-[var(--muted2)]">(optional)</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Website <span style={{ fontWeight: 500, color: '#9A9A90' }}>(optional)</span>
                   </span>
                   <input
+                    type="text"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     placeholder="freshfields.co.za"
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Registered Company Name <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Registered Company Name <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={registeredName}
                     onChange={(e) => setRegisteredName(e.target.value)}
                     placeholder="Fresh Fields Wholesale (Pty) Ltd"
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
+                </label>
+
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Trading Name <span style={{ fontWeight: 500, color: '#9A9A90' }}>(optional)</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={tradingName}
+                    onChange={(e) => setTradingName(e.target.value)}
+                    placeholder="Fresh Fields"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
+                  />
+                </label>
+
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Legal Entity Type <span style={{ color: '#D4373A' }}>*</span>
+                  </span>
+                  <select
+                    value={legalEntity}
+                    onChange={(e) => setLegalEntity(e.target.value)}
+                    style={{ height: '46px', padding: '0 12px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%', cursor: 'pointer' }}
+                  >
+                    <option>(Pty) Ltd — Private Company</option>
+                    <option>Ltd — Public Company</option>
+                    <option>CC — Close Corporation</option>
+                    <option>NPC — Non-Profit Company</option>
+                    <option>Trust</option>
+                  </select>
+                </label>
+
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Company Registration Number <span style={{ fontWeight: 500, color: '#9A9A90' }}>(optional)</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={regNumber}
+                    onChange={(e) => setRegNumber(e.target.value)}
+                    placeholder="2014/183920/07"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
+                  />
+                </label>
+
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Income Tax Number <span style={{ fontWeight: 500, color: '#9A9A90' }}>(optional)</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={taxNumber}
+                    onChange={(e) => setTaxNumber(e.target.value)}
+                    placeholder="9012345678"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
+                  />
+                  <span style={{ fontSize: '11.5px', color: '#82827A', fontWeight: 500 }}>Must not start with 4</span>
                 </label>
               </div>
             </div>
@@ -360,59 +436,65 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 2: Contacts */}
           {step === 2 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Contacts
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
                 Who should we speak to at your company?
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5 mb-6">
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Primary Contact Name <span className="text-[#D4373A]">*</span>
+
+              <div style={{ fontSize: '13px', fontWeight: 800, marginBottom: '12px' }}>
+                Primary Contact <span style={{ color: '#D4373A' }}>*</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', marginBottom: '26px' }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Name <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={primaryName}
                     onChange={(e) => setPrimaryName(e.target.value)}
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Job Title <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Job Title <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={primaryRole}
                     onChange={(e) => setPrimaryRole(e.target.value)}
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Phone <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Phone <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={primaryPhone}
                     onChange={(e) => setPrimaryPhone(e.target.value)}
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Email <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Email <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={primaryEmail}
                     onChange={(e) => setPrimaryEmail(e.target.value)}
-                    className={`h-11.5 px-3.5 rounded-xl border ${
-                      errors.primaryEmail ? 'border-[#D4373A] bg-[#FDF6F6]' : 'border-[var(--border)] bg-[#FFFFFF]'
-                    } outline-none text-[13.5px] font-medium text-[var(--ink)]`}
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: errors.primaryEmail ? '1.5px solid #D4373A' : '1.5px solid #E4E4DE', background: errors.primaryEmail ? '#FDF6F6' : '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                   {errors.primaryEmail && (
-                    <span className="text-[11.5px] font-semibold text-[#D4373A]">
+                    <span style={{ fontSize: '11.5px', color: '#D4373A', fontWeight: 600 }}>
                       A valid email address is required.
                     </span>
                   )}
@@ -424,50 +506,48 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 3: Address */}
           {step === 3 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Registered Address
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">Your company's registered address.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5">
-                <label className="flex flex-col gap-1.5 md:col-span-2">
-                  <span className="text-[12.5px] font-bold">
-                    Street Name & Number <span className="text-[#D4373A]">*</span>
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>Your company's registered address.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: '1 / -1' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Street Name & Number <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
-                    className="h-11.5 px-3.5 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)]"
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    City <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    City <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <input
+                    type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className={`h-11.5 px-3.5 rounded-xl border ${
-                      errors.city ? 'border-[#D4373A] bg-[#FDF6F6]' : 'border-[var(--border)] bg-[#FFFFFF]'
-                    } outline-none text-[13.5px] font-medium text-[var(--ink)]`}
+                    style={{ height: '46px', padding: '0 14px', borderRadius: '10px', border: errors.city ? '1.5px solid #D4373A' : '1.5px solid #E4E4DE', background: errors.city ? '#FDF6F6' : '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%' }}
                   />
-                  {errors.city && (
-                    <span className="text-[11.5px] font-semibold text-[#D4373A]">City is required.</span>
-                  )}
+                  {errors.city && <span style={{ fontSize: '11.5px', color: '#D4373A', fontWeight: 600 }}>City is required.</span>}
                 </label>
 
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Province <span className="text-[#D4373A]">*</span>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Province <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <select
                     value={province}
                     onChange={(e) => setProvince(e.target.value)}
-                    className="h-11.5 px-3 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)] cursor-pointer"
+                    style={{ height: '46px', padding: '0 12px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%', cursor: 'pointer' }}
                   >
-                    <option value="Western Cape">Western Cape</option>
-                    <option value="Gauteng">Gauteng</option>
-                    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                    <option>Western Cape</option>
+                    <option>Gauteng</option>
+                    <option>KwaZulu-Natal</option>
                   </select>
                 </label>
               </div>
@@ -477,40 +557,36 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 4: Donations */}
           {step === 4 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Donation Information
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
                 Help us plan collections and match your donations to need.
               </p>
-              <div className="flex flex-col gap-5">
-                <label className="flex flex-col gap-1.5">
-                  <span className="text-[12.5px] font-bold">
-                    Collection / Pickup Address <span className="text-[#D4373A]">*</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>
+                    Collection / Pickup Address <span style={{ color: '#D4373A' }}>*</span>
                   </span>
                   <textarea
                     rows={3}
                     value={pickupAddress}
                     onChange={(e) => setPickupAddress(e.target.value)}
-                    className={`p-3 px-3.5 rounded-xl border ${
-                      errors.pickupAddress ? 'border-[#D4373A] bg-[#FDF6F6]' : 'border-[var(--border)] bg-[#FFFFFF]'
-                    } outline-none text-[13.5px] font-medium text-[var(--ink)] resize-y`}
+                    style={{ padding: '12px 14px', borderRadius: '10px', border: errors.pickupAddress ? '1.5px solid #D4373A' : '1.5px solid #E4E4DE', background: errors.pickupAddress ? '#FDF6F6' : '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%', resize: 'vertical' }}
                   />
                 </label>
 
-                <div>
-                  <span className="block text-[12.5px] font-bold mb-2">Operational Regions</span>
-                  <div className="flex flex-wrap gap-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>Operational Regions</span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {REGIONS.map((r) => {
-                      const isSelected = selectedRegions.includes(r);
+                      const on = !!selectedRegions[r];
                       return (
                         <button
                           key={r}
                           type="button"
-                          onClick={() => toggleChip(r, selectedRegions, setSelectedRegions)}
-                          className={`h-9 px-4 rounded-full font-bold text-[12.5px] cursor-pointer ${
-                            isSelected ? 'bg-[#16160F] text-[#FADF01]' : 'border border-[var(--border)] bg-[#FFFFFF] text-[var(--muted)]'
-                          }`}
+                          onClick={() => toggleRegion(r)}
+                          style={{ height: '36px', padding: '0 16px', borderRadius: '18px', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '12.5px', fontWeight: 700, cursor: 'pointer', border: on ? 'none' : '1.5px solid #E4E4DE', background: on ? '#16160F' : '#FFFFFF', color: on ? '#FADF01' : '#82827A' }}
                         >
                           {r}
                         </button>
@@ -519,19 +595,17 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                   </div>
                 </div>
 
-                <div>
-                  <span className="block text-[12.5px] font-bold mb-2">Donation Types</span>
-                  <div className="flex flex-wrap gap-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>Donation Types</span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {DTYPES.map((t) => {
-                      const isSelected = selectedTypes.includes(t);
+                      const on = !!selectedTypes[t];
                       return (
                         <button
                           key={t}
                           type="button"
-                          onClick={() => toggleChip(t, selectedTypes, setSelectedTypes)}
-                          className={`h-9 px-4 rounded-full font-bold text-[12.5px] cursor-pointer ${
-                            isSelected ? 'bg-[#16160F] text-[#FADF01]' : 'border border-[var(--border)] bg-[#FFFFFF] text-[var(--muted)]'
-                          }`}
+                          onClick={() => toggleType(t)}
+                          style={{ height: '36px', padding: '0 16px', borderRadius: '18px', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '12.5px', fontWeight: 700, cursor: 'pointer', border: on ? 'none' : '1.5px solid #E4E4DE', background: on ? '#16160F' : '#FFFFFF', color: on ? '#FADF01' : '#82827A' }}
                         >
                           {t}
                         </button>
@@ -546,33 +620,33 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 5: Compliance */}
           {step === 5 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Compliance
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
                 All fields on this step are optional.
               </p>
-              <div className="flex flex-col gap-5">
-                <label className="flex flex-col gap-1.5 max-w-xs">
-                  <span className="text-[12.5px] font-bold">BBBEE Status</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '340px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>BBBEE Status</span>
                   <select
                     value={bbbeeStatus}
                     onChange={(e) => setBbbeeStatus(e.target.value)}
-                    className="h-11.5 px-3 rounded-xl border border-[var(--border)] bg-[#FFFFFF] outline-none text-[13.5px] font-medium text-[var(--ink)] cursor-pointer"
+                    style={{ height: '46px', padding: '0 12px', borderRadius: '10px', border: '1.5px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', color: '#16160F', outline: 'none', width: '100%', cursor: 'pointer' }}
                   >
-                    <option value="Level 2">Level 2</option>
-                    <option value="Level 1">Level 1</option>
-                    <option value="Level 3">Level 3</option>
-                    <option value="Level 4">Level 4</option>
+                    <option>Level 2</option>
+                    <option>Level 1</option>
+                    <option>Level 3</option>
+                    <option>Level 4</option>
                   </select>
                 </label>
 
-                <div>
-                  <span className="block text-[12.5px] font-bold mb-2">BBBEE Certificate</span>
-                  <div className="border-2 border-dashed border-[var(--border)] rounded-2xl bg-[#FFFFFF] p-7 flex flex-col items-center gap-2 text-center cursor-pointer hover:border-[#C9B300] hover:bg-[#FFFDF0] transition-colors">
-                    <UploadCloud className="w-8 h-8 text-[var(--icon)]" />
-                    <div className="text-[13.5px] font-bold">Drag & drop your certificate, or browse</div>
-                    <div className="text-[11.5px] text-[var(--muted)] font-medium">PDF or image · max 5MB</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 700 }}>BBBEE Certificate</span>
+                  <div style={{ border: '2px dashed #E4E4DE', borderRadius: '14px', background: '#FFFFFF', padding: '30px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', textAlign: 'center', cursor: 'pointer' }}>
+                    <UploadCloud size={24} style={{ color: '#4A4A43' }} />
+                    <div style={{ fontSize: '13.5px', fontWeight: 700 }}>Drag & drop your certificate, or browse</div>
+                    <div style={{ fontSize: '11.5px', color: '#82827A', fontWeight: 500 }}>PDF or image · max 5MB</div>
                   </div>
                 </div>
               </div>
@@ -582,11 +656,11 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 6: Signature */}
           {step === 6 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Signature
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
-                Please sign to confirm the information provided is accurate <span className="text-[#D4373A]">*</span>
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
+                Please sign to confirm the information provided is accurate <span style={{ color: '#D4373A' }}>*</span>
               </p>
               <canvas
                 ref={sigRef}
@@ -595,21 +669,22 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                 onPointerDown={handleSigPointerDown}
                 onPointerMove={handleSigPointerMove}
                 onPointerUp={handleSigPointerUp}
-                className={`block w-full h-[220px] rounded-2xl bg-[#FFFFFF] touch-none cursor-crosshair border-2 ${
-                  errors.signature ? 'border-[#D4373A]' : 'border-[var(--border)]'
-                }`}
+                style={{ display: 'block', width: '100%', height: '220px', borderRadius: '14px', background: '#FFFFFF', touchAction: 'none', cursor: 'crosshair', border: errors.signature ? '2px solid #D4373A' : '2px solid #E4E4DE' }}
               />
               {errors.signature && (
-                <div className="mt-2 text-[11.5px] font-semibold text-[#D4373A]">
+                <div style={{ marginTop: '8px', fontSize: '11.5px', color: '#D4373A', fontWeight: 600 }}>
                   A signature is required before you can continue.
                 </div>
               )}
-              <div className="flex items-center gap-3 mt-3">
-                <Button variant="secondary" size="sm" onClick={handleSigClear}>
-                  <RotateCcw className="w-3.5 h-3.5" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px' }}>
+                <button
+                  onClick={handleSigClear}
+                  style={{ display: 'flex', alignItems: 'center', gap: '7px', height: '38px', padding: '0 16px', borderRadius: '19px', border: '1px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '12.5px', fontWeight: 600, color: '#16160F', cursor: 'pointer' }}
+                >
+                  <RotateCcw size={13} />
                   <span>Clear</span>
-                </Button>
-                <span className="text-[11.5px] text-[var(--muted)] font-medium">
+                </button>
+                <span style={{ fontSize: '11.5px', color: '#82827A', fontWeight: 500 }}>
                   Draw your signature above using your mouse or finger.
                 </span>
               </div>
@@ -619,14 +694,13 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
           {/* STEP 7: Review */}
           {step === 7 && (
             <div>
-              <h2 className="m-0 mb-1 text-lg font-extrabold tracking-tight text-[var(--ink)]">
+              <h2 style={{ margin: '0 0 4px', fontSize: '19px', fontWeight: 800, letterSpacing: '-0.4px' }}>
                 Review
               </h2>
-              <p className="m-0 mb-6 text-13 text-[var(--muted)] font-medium">
+              <p style={{ margin: '0 0 24px', fontSize: '13px', color: '#82827A', fontWeight: 500 }}>
                 Please check your details before submitting.
               </p>
-              <div className="flex flex-col gap-3.5">
-                {/* Summary Groups */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {[
                   {
                     title: 'Company Information',
@@ -650,31 +724,23 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                     stepTarget: 3,
                     rows: [{ label: 'Location', value: `${street}, ${suburb}, ${city}` }],
                   },
-                  {
-                    title: 'Donations',
-                    stepTarget: 4,
-                    rows: [
-                      { label: 'Regions', value: selectedRegions.join(', ') },
-                      { label: 'Types', value: selectedTypes.join(', ') },
-                    ],
-                  },
                 ].map((grp) => (
-                  <div key={grp.title} className="bg-[#FFFFFF] border border-[var(--border)] rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-13 font-extrabold">{grp.title}</span>
+                  <div key={grp.title} style={{ background: '#FFFFFF', border: '1px solid #E4E4DE', borderRadius: '12px', padding: '16px 18px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 800 }}>{grp.title}</span>
                       <button
                         onClick={() => setStep(grp.stepTarget)}
-                        className="flex items-center gap-1 border-none bg-transparent text-xs font-bold text-[var(--ink)] cursor-pointer border-b-[1.5px] border-[#FADF01]"
+                        style={{ display: 'flex', alignItems: 'center', gap: '5px', border: 'none', background: 'transparent', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '12px', fontWeight: 700, color: '#16160F', cursor: 'pointer', borderBottom: '1.5px solid #FADF01', padding: '0 0 1px', marginLeft: 'auto' }}
                       >
-                        <Edit3 className="w-3 h-3" />
+                        <Edit3 size={12} />
                         <span>Edit</span>
                       </button>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', rowGap: '7px', columnGap: '16px' }}>
                       {grp.rows.map((row) => (
                         <React.Fragment key={row.label}>
-                          <span className="text-[var(--muted)] font-medium">{row.label}:</span>
-                          <span className="font-semibold">{row.value}</span>
+                          <span style={{ fontSize: '12.5px', color: '#82827A', fontWeight: 500 }}>{row.label}</span>
+                          <span style={{ fontSize: '12.5px', fontWeight: 600 }}>{row.value}</span>
                         </React.Fragment>
                       ))}
                     </div>
@@ -682,7 +748,7 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                 ))}
               </div>
 
-              <label className="flex items-start gap-2.5 mt-5.5 cursor-pointer">
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginTop: '22px', cursor: 'pointer' }}>
                 <input
                   type="checkbox"
                   checked={confirmChecked}
@@ -690,51 +756,64 @@ export const PublicOnboardingPage: React.FC<PublicOnboardingPageProps> = ({
                     setConfirmChecked(e.target.checked);
                     setErrors({});
                   }}
-                  className="w-4.5 h-4.5 mt-0.5 accent-[#16160F] cursor-pointer"
+                  style={{ width: '18px', height: '18px', margin: '1px 0 0', accentColor: '#16160F', cursor: 'pointer' }}
                 />
-                <span className="text-13 font-semibold">
-                  I confirm this information is accurate <span className="text-[#D4373A]">*</span>
+                <span style={{ fontSize: '13px', fontWeight: 600 }}>
+                  I confirm this information is accurate <span style={{ color: '#D4373A' }}>*</span>
                 </span>
               </label>
               {errors.confirm && (
-                <div className="mt-1.5 ml-7 text-[11.5px] font-semibold text-[#D4373A]">
+                <div style={{ marginTop: '6px', marginLeft: '28px', fontSize: '11.5px', color: '#D4373A', fontWeight: 600 }}>
                   Please confirm before submitting.
                 </div>
               )}
             </div>
           )}
 
-          {/* Wizard Footer Controls */}
-          <div className="flex items-center justify-between mt-7.5 pt-5 border-t border-[var(--hair)]">
+          {/* Footer Navigation Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '30px', paddingTop: '22px', borderTop: '1px solid #EDEDE8' }}>
             <div>
               {step > 1 && (
-                <Button variant="secondary" onClick={handleBack}>
-                  <ChevronLeft className="w-3.5 h-3.5" />
+                <button
+                  onClick={handleBack}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '46px', padding: '0 22px', borderRadius: '23px', border: '1px solid #E4E4DE', background: '#FFFFFF', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', fontWeight: 600, color: '#16160F', cursor: 'pointer' }}
+                >
+                  <ChevronLeft size={14} />
                   <span>Back</span>
-                </Button>
+                </button>
               )}
             </div>
-            <div className="flex items-center gap-3.5">
-              <span className="text-xs font-semibold text-[var(--muted2)]">
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginLeft: 'auto' }}>
+              <span style={{ fontSize: '12px', color: '#9A9A90', fontWeight: 600 }}>
                 Step {step} of 7
               </span>
+
               {step < 7 ? (
-                <Button variant="default" onClick={handleNext}>
+                <button
+                  onClick={handleNext}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '46px', padding: '0 26px', borderRadius: '23px', border: 'none', background: '#FADF01', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '13.5px', fontWeight: 700, color: '#16160F', cursor: 'pointer', boxShadow: '0 2px 8px rgba(250,223,1,0.45)' }}
+                >
                   <span>Next</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </Button>
+                  <ChevronRight size={14} />
+                </button>
               ) : (
-                <Button variant="default" onClick={handleSubmit} className="h-12 px-7 font-extrabold text-sm">
+                <button
+                  onClick={handleSubmit}
+                  style={{ display: 'flex', alignItems: 'center', gap: '9px', height: '50px', padding: '0 30px', borderRadius: '25px', border: 'none', background: '#FADF01', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: '14.5px', fontWeight: 800, color: '#16160F', cursor: 'pointer', boxShadow: '0 2px 10px rgba(250,223,1,0.5)' }}
+                >
                   <span>Submit Application</span>
-                </Button>
+                </button>
               )}
             </div>
           </div>
         </div>
       </main>
 
-      <footer className="p-5 text-center text-xs text-[var(--muted2)] font-medium">
-        S.A. Harvest NPC · Rescuing food, fighting hunger · Protected under POPIA.
+      <footer style={{ padding: '22px 24px 34px', textAlign: 'center' }}>
+        <p style={{ margin: 0, fontSize: '11.5px', color: '#9A9A90', fontWeight: 500 }}>
+          S.A. Harvest NPC · Rescuing food, fighting hunger · Your information is protected under POPIA.
+        </p>
       </footer>
     </div>
   );

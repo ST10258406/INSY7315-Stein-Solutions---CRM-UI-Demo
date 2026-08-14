@@ -133,9 +133,9 @@ export const Header: React.FC<HeaderProps> = ({
         {/* User Profile Avatar */}
         <div className="flex items-center gap-2.5 pl-1.5">
           <img
-            src="/assets/avatar-keegan.svg"
+            src="/assets/avatar-keegan.jpg"
             alt="Keegan Roux"
-            className="w-9.5 h-9.5 rounded-full object-cover block border-2 border-[var(--border)]"
+            className="w-[38px] h-[38px] rounded-full object-cover block border-2 border-[var(--border)]"
           />
         </div>
       </div>
