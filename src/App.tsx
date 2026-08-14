@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { NavTab, Donor, ApprovalRecord, TaskItem, TimelineItem, EmailMessage, EmailAttachment } from '@/types/crm';
+import type { NavTab, Donor, ApprovalRecord, TaskItem, TimelineItem, EmailMessage, EmailAttachment, UserAccount, UserRole } from '@/types/crm';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Header } from '@/components/layout/Header';
 import { SideRail } from '@/components/layout/SideRail';
@@ -8,6 +8,8 @@ import { DonorsPage } from '@/pages/DonorsPage';
 import { DonorDetailPage } from '@/pages/DonorDetailPage';
 import { ApprovalsPage } from '@/pages/ApprovalsPage';
 import { TasksPage } from '@/pages/TasksPage';
+import { ReportsPage } from '@/pages/ReportsPage';
+import { UsersPage } from '@/pages/UsersPage';
 import { LogInteractionModal } from '@/components/modals/LogInteractionModal';
 import { NewTaskModal } from '@/components/modals/NewTaskModal';
 import { EmailDrawer } from '@/components/modals/EmailDrawer';
@@ -17,7 +19,8 @@ import {
   INITIAL_TASKS, 
   INITIAL_TIMELINE, 
   INITIAL_EMAILS, 
-  INITIAL_EMAIL_ATTACHMENTS 
+  INITIAL_EMAIL_ATTACHMENTS,
+  INITIAL_USERS
 } from '@/data/mockData';
 
 export function AppContent() {
@@ -32,6 +35,23 @@ export function AppContent() {
   const [timeline, setTimeline] = useState<TimelineItem[]>(INITIAL_TIMELINE);
   const [emails, setEmails] = useState<EmailMessage[]>(INITIAL_EMAILS);
   const [attachments] = useState<EmailAttachment[]>(INITIAL_EMAIL_ATTACHMENTS);
+  const [users, setUsers] = useState<UserAccount[]>(INITIAL_USERS);
+
+  const handleAddUser = (newUser: UserAccount) => {
+    setUsers((prev) => [newUser, ...prev]);
+  };
+
+  const handleUpdateUserRole = (id: string, newRole: UserRole) => {
+    setUsers((prev) =>
+      prev.map((u) => (u.id === id ? { ...u, role: newRole } : u))
+    );
+  };
+
+  const handleToggleUserActive = (id: string) => {
+    setUsers((prev) =>
+      prev.map((u) => (u.id === id ? { ...u, active: !u.active } : u))
+    );
+  };
 
   // Layout & Modal States
   const [railOpen, setRailOpen] = useState(true);
@@ -206,18 +226,17 @@ export function AppContent() {
           />
         )}
 
-        {(activeTab === 'Reports' || activeTab === 'Users') && (
-          <main className="flex-1 min-w-0 overflow-y-auto p-12 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--icon-bg)] border border-[var(--border)] flex items-center justify-center text-[var(--muted2)] mb-4 text-xl font-extrabold">
-              {activeTab[0]}
-            </div>
-            <h2 className="text-xl font-extrabold text-[var(--ink)] mb-2">
-              {activeTab} Module
-            </h2>
-            <p className="text-sm text-[var(--muted)] max-w-sm font-medium">
-              This module is included in the full CRM suite. Navigate to Dashboard, Donors, Tasks, or Approvals to explore live demo screens.
-            </p>
-          </main>
+        {activeTab === 'Reports' && (
+          <ReportsPage />
+        )}
+
+        {activeTab === 'Users' && (
+          <UsersPage
+            users={users}
+            onAddUser={handleAddUser}
+            onUpdateUserRole={handleUpdateUserRole}
+            onToggleUserActive={handleToggleUserActive}
+          />
         )}
       </div>
 

@@ -1,4 +1,4 @@
-import type { Donor, ApprovalRecord, TaskItem, TimelineItem, EmailMessage, EmailAttachment } from '../types/crm';
+import type { Donor, ApprovalRecord, TaskItem, TimelineItem, EmailMessage, EmailAttachment, UserAccount } from '../types/crm';
 
 export const MANAGER_PALETTE: Record<string, string> = {
   "Nomsa Khumalo": "#3F5D46",
@@ -394,3 +394,16 @@ export const OVERDUE_FOLLOWUPS = [
   { name: "Zanele Dlamini", ref: "DNR-10945", status: "Rejected" as const, days: 6 },
   { name: "Bo-Kaap Wholesale Co.", ref: "DNR-10307", status: "Active" as const, days: 4 }
 ];
+
+export const INITIAL_USERS: UserAccount[] = [
+  { id: 'usr-1', name: "Keegan Naidoo", email: "keegan@saharvest.org", role: "SuperAdmin", active: true, created: "12 Jan 2024", self: true },
+  { id: 'usr-2', name: "Nomsa Dube", email: "nomsa@saharvest.org", role: "Admin", active: true, created: "03 Mar 2024" },
+  { id: 'usr-3', name: "Johan Pretorius", email: "johan@saharvest.org", role: "Admin", active: false, created: "15 Feb 2024" },
+  { id: 'usr-4', name: "Riaan Fourie", email: "riaan@saharvest.org", role: "Procurement", active: true, created: "18 Apr 2024" },
+  { id: 'usr-5', name: "Lerato Molefe", email: "lerato@saharvest.org", role: "Procurement", active: true, created: "02 Jun 2024" },
+  { id: 'usr-6', name: "Thabo Mashaba", email: "thabo@saharvest.org", role: "Procurement", active: true, created: "07 Jan 2025" },
+  { id: 'usr-7', name: "Ayesha Cassim", email: "ayesha@saharvest.org", role: "Marketing", active: true, created: "11 Aug 2024" },
+  { id: 'usr-8', name: "Sipho Ndlovu", email: "sipho@saharvest.org", role: "Marketing", active: true, created: "29 Oct 2024" },
+  { id: 'usr-9', name: "Annelie du Toit", email: "annelie@saharvest.org", role: "Marketing", active: false, created: "21 May 2025" }
+];
+

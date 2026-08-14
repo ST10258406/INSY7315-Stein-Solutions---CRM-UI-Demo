@@ -1,5 +1,17 @@
 export type NavTab = 'Dashboard' | 'Donors' | 'Tasks' | 'Approvals' | 'Reports' | 'Users';
 
+export type UserRole = 'Marketing' | 'Procurement' | 'Admin' | 'SuperAdmin';
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  active: boolean;
+  created: string;
+  self?: boolean;
+}
+
 export type DonorStatus = 'Pending Review' | 'Active' | 'Lapsed' | 'Rejected';
 export type DonorType = 'Manufacturer' | 'Retailer' | 'Distributor';
 
