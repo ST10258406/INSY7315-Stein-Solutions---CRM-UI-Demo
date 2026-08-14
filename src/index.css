@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --page: #F2F2EF;
+    --card: #FFFFFF;
+    --soft: #EDEDE9;
+    --border: #E4E4DE;
+    --hair: #F0F0EB;
+    --divider: #EBEBE5;
+    --ink: #16160F;
+    --muted: #82827A;
+    --muted2: #9A9A90;
+    --icon: #4A4A43;
+    --icon-bg: #F4F4F0;
+    --hover: #EFEFEB;
+    --row-hover: #FAFAF7;
+    --pill: #F4F4F1;
+    --pill-ink: #3D3D36;
+    --pill-icon-bg: #FFFFFF;
+    --pill-active-bg: #16160F;
+    --pill-active-fg: #FFFFFF;
+    --pill-active-icon: #FADF01;
+    --badge-bg: #16160F;
+    --badge-fg: #FADF01;
+    --field: #FAFAF8;
+    --chip: #F1F1EC;
+    --shadow: rgba(20,20,15,.05);
+    --bar-track: #E7E7E1;
+    --urgent: #1A1A12;
+    --brand-yellow: #FADF01;
+    --brand-green: #1E6E3C;
+    --brand-red: #C0272B;
+    --skel: #EAEAE4;
+    --skel2: #F5F5F1;
+  }
+
+  [data-theme="dark"], .dark {
+    --page: #0C0C0A;
+    --card: #1A1A14;
+    --soft: #131310;
+    --border: #2B2B23;
+    --hair: #27271F;
+    --divider: #2B2B23;
+    --ink: #F4F4EE;
+    --muted: #9C9C92;
+    --muted2: #86867C;
+    --icon: #B9B9AE;
+    --icon-bg: #26261D;
+    --hover: #26261D;
+    --row-hover: #21211A;
+    --pill: #1D1D17;
+    --pill-ink: #C9C9C0;
+    --pill-icon-bg: #26261D;
+    --pill-active-bg: #FADF01;
+    --pill-active-fg: #16160F;
+    --pill-active-icon: #16160F;
+    --badge-bg: #FADF01;
+    --badge-fg: #16160F;
+    --field: #131310;
+    --chip: #26261D;
+    --shadow: rgba(0,0,0,.55);
+    --bar-track: #2E2E25;
+    --urgent: #241F05;
+    --skel: #26261D;
+    --skel2: #32322A;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted2);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+@keyframes shimmer {
+  0% { background-position: -420px 0; }
+  100% { background-position: 420px 0; }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.25s linear infinite;
+}
+
+@keyframes emailSlideIn {
+  from { transform: translateX(60px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-email-slide {
+  animation: emailSlideIn .32s cubic-bezier(.32,.72,.24,1);
+}
+
+@keyframes emailFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-email-fade {
+  animation: emailFadeIn .25s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(.6); opacity: 0; }
+  60% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: pop .22s ease-out;
+}
