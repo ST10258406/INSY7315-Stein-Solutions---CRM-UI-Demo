@@ -14,7 +14,8 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  FilterX
+  FilterX,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Donor } from '@/types/crm';
@@ -23,14 +24,18 @@ import { getInitials, MANAGER_PALETTE } from '@/data/mockData';
 interface DonorsPageProps {
   donors: Donor[];
   onNewDonorClick: () => void;
+  onPreviewOnboardingClick: () => void;
   onSelectDonor: (id: string) => void;
+  onEditDonorClick: (donor: Donor) => void;
   onLogInteractionClick: (donorName: string) => void;
 }
 
 export const DonorsPage: React.FC<DonorsPageProps> = ({
   donors,
   onNewDonorClick,
+  onPreviewOnboardingClick,
   onSelectDonor,
+  onEditDonorClick,
   onLogInteractionClick,
 }) => {
   const [viewState, setViewState] = useState<'table' | 'loading' | 'empty'>('table');
@@ -129,6 +134,11 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
           >
             <Download className="w-3.75 h-3.75 text-[var(--ink)]" />
             <span>Export</span>
+          </Button>
+
+          <Button variant="secondary" onClick={onPreviewOnboardingClick}>
+            <ExternalLink className="w-3.75 h-3.75 text-[var(--ink)]" />
+            <span>Preview Donor Onboarding Form</span>
           </Button>
 
           <Button variant="default" onClick={onNewDonorClick}>
@@ -425,7 +435,10 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                               <span>View Profile</span>
                             </button>
                             <button
-                              onClick={() => setOpenMenuId(null)}
+                              onClick={() => {
+                                setOpenMenuId(null);
+                                onEditDonorClick(donor);
+                              }}
                               className="flex items-center gap-2.5 h-9 px-3 border-none rounded-lg bg-transparent text-13 font-semibold text-[var(--ink)] cursor-pointer hover:bg-[var(--hover)]"
                             >
                               <Edit3 className="w-3.75 h-3.75 text-[var(--icon)]" />

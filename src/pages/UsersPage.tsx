@@ -397,7 +397,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({
                   value={newFirstName}
                   onChange={(e) => setNewFirstName(e.target.value)}
                   placeholder="First name"
-                  className="h-10 px-3.5 rounded-lg border-1.5 border-[var(--border)] bg-[var(--input)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)]"
+                  className="h-10 px-3.5 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)] focus:ring-2 focus:ring-black/10 shadow-xs"
                 />
               </label>
 
@@ -408,7 +408,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({
                   value={newLastName}
                   onChange={(e) => setNewLastName(e.target.value)}
                   placeholder="Last name"
-                  className="h-10 px-3.5 rounded-lg border-1.5 border-[var(--border)] bg-[var(--input)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)]"
+                  className="h-10 px-3.5 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)] focus:ring-2 focus:ring-black/10 shadow-xs"
                 />
               </label>
 
@@ -419,7 +419,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="name@saharvest.org"
-                  className="h-10 px-3.5 rounded-lg border-1.5 border-[var(--border)] bg-[var(--input)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)]"
+                  className="h-10 px-3.5 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)] focus:ring-2 focus:ring-black/10 shadow-xs"
                 />
               </label>
 
@@ -428,7 +428,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({
                 <select 
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value as UserRole)}
-                  className="h-10 px-3 rounded-lg border-1.5 border-[var(--border)] bg-[var(--input)] text-xs text-[var(--ink)] outline-none cursor-pointer"
+                  className="h-10 px-3 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)] cursor-pointer shadow-xs"
                 >
                   <option value="Marketing">Marketing</option>
                   <option value="Procurement">Procurement</option>
@@ -496,7 +496,7 @@ export const UsersPage: React.FC<UsersPageProps> = ({
               <select 
                 value={editRole}
                 onChange={(e) => setEditRole(e.target.value as UserRole)}
-                className="h-10 px-3 rounded-lg border-1.5 border-[var(--border)] bg-[var(--input)] text-xs text-[var(--ink)] outline-none cursor-pointer"
+                className="h-10 px-3 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--ink)] outline-none focus:border-[var(--ink)] cursor-pointer shadow-xs"
               >
                 <option value="Marketing">Marketing</option>
                 <option value="Procurement">Procurement</option>

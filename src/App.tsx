@@ -12,6 +12,8 @@ import { ReportsPage } from '@/pages/ReportsPage';
 import { UsersPage } from '@/pages/UsersPage';
 import { LogInteractionModal } from '@/components/modals/LogInteractionModal';
 import { NewTaskModal } from '@/components/modals/NewTaskModal';
+import { NewDonorModal } from '@/components/modals/NewDonorModal';
+import { DonorOnboardingPreviewModal } from '@/components/modals/DonorOnboardingPreviewModal';
 import { EmailDrawer } from '@/components/modals/EmailDrawer';
 import { 
   INITIAL_DONORS, 
@@ -59,6 +61,43 @@ export function AppContent() {
   const [logModalOpen, setLogModalOpen] = useState(false);
   const [logModalTargetDonor, setLogModalTargetDonor] = useState<string>('FoodCorp SA');
   const [newTaskModalOpen, setNewTaskModalOpen] = useState(false);
+  const [newDonorModalOpen, setNewDonorModalOpen] = useState(false);
+  const [donorToEdit, setDonorToEdit] = useState<Donor | null>(null);
+  const [onboardingPreviewOpen, setOnboardingPreviewOpen] = useState(false);
+
+  const handleOpenNewDonor = () => {
+    setDonorToEdit(null);
+    setNewDonorModalOpen(true);
+  };
+
+  const handleOpenEditDonor = (donor: Donor) => {
+    setDonorToEdit(donor);
+    setNewDonorModalOpen(true);
+  };
+
+  const handleSaveDonor = (donorData: Partial<Donor>) => {
+    if (donorToEdit) {
+      setDonors((prev) =>
+        prev.map((d) => (d.id === donorToEdit.id ? ({ ...d, ...donorData } as Donor) : d))
+      );
+    } else {
+      const created: Donor = {
+        id: donorData.id || `donor_${Date.now()}`,
+        name: donorData.name || 'New Donor',
+        type: donorData.type || 'Manufacturer',
+        status: donorData.status || 'Pending Review',
+        manager: donorData.manager || 'Nomsa Khumalo',
+        regions: donorData.regions || ['JHB'],
+        frequency: donorData.frequency || 'Weekly',
+        lastInteraction: 'Just created',
+        lastInteractionType: 'note',
+        followUpDate: 'Next week',
+        overdue: false,
+        ...donorData,
+      } as Donor;
+      setDonors((prev) => [created, ...prev]);
+    }
+  };
 
   const selectedDonor = donors.find((d) => d.id === selectedDonorId) || donors[0];
   const pendingApprovalsCount = approvals.filter((a) => a.state === 'Pending').length;
@@ -175,7 +214,7 @@ export function AppContent() {
         {/* Dynamic Route View */}
         {activeTab === 'Dashboard' && (
           <DashboardPage
-            onNewDonorClick={() => setNewTaskModalOpen(true)}
+            onNewDonorClick={handleOpenNewDonor}
             onNavigateToDonor={handleNavigateToDonor}
           />
         )}
@@ -183,11 +222,13 @@ export function AppContent() {
         {activeTab === 'Donors' && !isDetailView && (
           <DonorsPage
             donors={donors}
-            onNewDonorClick={() => setNewTaskModalOpen(true)}
+            onNewDonorClick={handleOpenNewDonor}
+            onPreviewOnboardingClick={() => setOnboardingPreviewOpen(true)}
             onSelectDonor={(id) => {
               setSelectedDonorId(id);
               setIsDetailView(true);
             }}
+            onEditDonorClick={handleOpenEditDonor}
             onLogInteractionClick={(name) => {
               setLogModalTargetDonor(name);
               setLogModalOpen(true);
@@ -263,6 +304,18 @@ export function AppContent() {
         donors={donors}
         onClose={() => setNewTaskModalOpen(false)}
         onCreate={handleCreateTask}
+      />
+
+      <NewDonorModal
+        isOpen={newDonorModalOpen}
+        donorToEdit={donorToEdit}
+        onClose={() => { setNewDonorModalOpen(false); setDonorToEdit(null); }}
+        onSave={handleSaveDonor}
+      />
+
+      <DonorOnboardingPreviewModal
+        isOpen={onboardingPreviewOpen}
+        onClose={() => setOnboardingPreviewOpen(false)}
       />
     </div>
   );
