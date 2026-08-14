@@ -1,6 +1,7 @@
 import React from 'react';
 import type { NavTab } from '@/types/crm';
 import { useTheme } from '@/context/ThemeContext';
+import logoImg from '@/assets/sa-harvest-logo.png';
 import {
   LayoutDashboard,
   Users,
@@ -41,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Brand Logo & Title */}
       <div className="flex items-center gap-3 shrink-0 cursor-pointer" onClick={() => setActiveTab('Dashboard')}>
         <img
-          src="/assets/sa-harvest-logo.svg"
+          src={logoImg}
           alt="S.A. Harvest"
           className="w-[62px] h-[62px] rounded-2xl object-cover block shadow-sm border border-[var(--border)]"
         />
