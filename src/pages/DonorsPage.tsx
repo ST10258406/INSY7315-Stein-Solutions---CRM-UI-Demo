@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Download, 
-  Plus, 
-  ChevronDown, 
-  Check, 
-  MoreHorizontal, 
-  Eye, 
-  Edit3, 
-  MessageSquare, 
-  Phone, 
-  Mail, 
+import {
+  Search,
+  Download,
+  Plus,
+  ChevronDown,
+  Check,
+  MoreHorizontal,
+  Eye,
+  Edit3,
+  MessageSquare,
+  Phone,
+  Mail,
   Users,
   ChevronLeft,
   ChevronRight,
@@ -136,10 +136,7 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
             <span>Export</span>
           </Button>
 
-          <Button variant="secondary" onClick={onPreviewOnboardingClick}>
-            <ExternalLink className="w-3.75 h-3.75 text-[var(--ink)]" />
-            <span>Preview Donor Onboarding Form</span>
-          </Button>
+
 
           <Button variant="default" onClick={onNewDonorClick}>
             <Plus className="w-4 h-4 stroke-[2.2]" />
@@ -168,11 +165,10 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
           {/* Status Dropdown Filter */}
           <button
             onClick={() => cycleFilter(statusFilter, statusOpts, setStatusFilter)}
-            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${
-              statusFilter !== 'All'
-                ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
-                : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
-            }`}
+            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${statusFilter !== 'All'
+              ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
+              : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
+              }`}
           >
             <span className={statusFilter !== 'All' ? 'font-semibold text-[#16160F]' : 'font-semibold text-[var(--muted)]'}>
               Status:
@@ -184,11 +180,10 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
           {/* Type Dropdown Filter */}
           <button
             onClick={() => cycleFilter(typeFilter, typeOpts, setTypeFilter)}
-            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${
-              typeFilter !== 'All'
-                ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
-                : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
-            }`}
+            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${typeFilter !== 'All'
+              ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
+              : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
+              }`}
           >
             <span className={typeFilter !== 'All' ? 'font-semibold text-[#16160F]' : 'font-semibold text-[var(--muted)]'}>
               Type:
@@ -200,11 +195,10 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
           {/* Region Dropdown Filter */}
           <button
             onClick={() => cycleFilter(regionFilter, regionOpts, setRegionFilter)}
-            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${
-              regionFilter !== 'All'
-                ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
-                : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
-            }`}
+            className={`flex items-center gap-1.75 h-[42px] px-3.5 rounded-full border text-[12.5px] cursor-pointer whitespace-nowrap shrink-0 transition-colors ${regionFilter !== 'All'
+              ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
+              : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
+              }`}
           >
             <span className={regionFilter !== 'All' ? 'font-semibold text-[#16160F]' : 'font-semibold text-[var(--muted)]'}>
               Region:
@@ -219,16 +213,14 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
               setOverdueOnly(!overdueOnly);
               setPage(1);
             }}
-            className={`flex items-center gap-2.25 h-[42px] px-4 rounded-full border text-[12.5px] font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors ${
-              overdueOnly
-                ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
-                : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
-            }`}
+            className={`flex items-center gap-2.25 h-[42px] px-4 rounded-full border text-[12.5px] font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors ${overdueOnly
+              ? 'border-[#FADF01] bg-[#FADF01] text-[#16160F]'
+              : 'border-[var(--border)] bg-[var(--card)] text-[var(--ink)]'
+              }`}
           >
             <span
-              className={`w-4.25 h-4.25 rounded-md flex items-center justify-center border ${
-                overdueOnly ? 'border-[#16160F] bg-[#16160F]' : 'border-[var(--border)] bg-[var(--field)]'
-              }`}
+              className={`w-4.25 h-4.25 rounded-md flex items-center justify-center border ${overdueOnly ? 'border-[#16160F] bg-[#16160F]' : 'border-[var(--border)] bg-[var(--field)]'
+                }`}
             >
               {overdueOnly && <Check className="w-3 h-3 text-[#FADF01] stroke-[3]" />}
             </span>
@@ -531,11 +523,10 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`min-w-[34px] h-8.5 px-2.5 rounded-full border text-[12.5px] font-bold cursor-pointer transition-colors ${
-                      isActive
-                        ? 'border-[var(--ink)] bg-[var(--ink)] text-[var(--card)]'
-                        : 'border-[var(--border)] bg-[var(--field)] text-[var(--ink)]'
-                    }`}
+                    className={`min-w-[34px] h-8.5 px-2.5 rounded-full border text-[12.5px] font-bold cursor-pointer transition-colors ${isActive
+                      ? 'border-[var(--ink)] bg-[var(--ink)] text-[var(--card)]'
+                      : 'border-[var(--border)] bg-[var(--field)] text-[var(--ink)]'
+                      }`}
                   >
                     {n}
                   </button>
