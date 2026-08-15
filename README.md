@@ -1,6 +1,6 @@
-# S.A. Harvest Donor CRM — Modern React 19 UI Application
+# S.A. Harvest Donor CRM — React 19 Prototype UI
 
-A high-performance, responsive, state-of-the-art Donor CRM and Public Onboarding Web Application built for **S.A. Harvest** to manage donor relationships, food rescue operations, approvals, tasks, and public onboarding applications.
+
 
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
@@ -9,32 +9,39 @@ A high-performance, responsive, state-of-the-art Donor CRM and Public Onboarding
 
 ---
 
-## 🚀 Quick Start — How to Run Locally
-
-### Prerequisites
-
-Ensure you have the following installed on your machine:
-- **Node.js**: `v18.0.0` or higher (Node 20+ / 22+ recommended)
-- **NPM**: `v9.0.0` or higher (or `pnpm` / `yarn`)
-
-### Installation Steps
-
-1. **Clone the repository** (or navigate to the project directory):
-   ```bash
-   git clone <repository-url>
-   cd INSY7315-Stein-Solutions---CRM-UI-Demo
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start the local development server**:
-   ```bash
-   npm run dev
-   ```
-
+> ## 🚀 Quick Start — How to Run Locally
+> 
+> ### Prerequisites
+> 
+> Ensure you have the following installed on your machine before proceeding:
+> - **[Node.js](https://nodejs.org/en/download)**: `v18.0.0` or higher (Node 20+ / 22+ recommended). This includes NPM (`v9.0.0` or higher).
+> - **[Git](https://git-scm.com/downloads)**: Required to clone the repository.
+> 
+> ### Installation Steps
+> 
+> 1. **Clone the repository**:
+>    ```bash
+>    git clone https://github.com/ST10258406/INSY7315-Stein-Solutions---CRM-UI-Demo.git
+>    ```
+> 
+> 2. **Navigate into the directory**:
+>    ```bash
+>    cd INSY7315-Stein-Solutions---CRM-UI-Demo
+>    ```
+> 
+> 3. **Install dependencies**:
+>    ```bash
+>    npm install
+>    ```
+> 
+> 4. **Start the local development server**:
+>    ```bash
+>    npm run dev
+>    ```
+>    
+> 5. **View the Application**:
+>    Open your browser and navigate to the local URL provided in the terminal (typically `http://localhost:5173`).
+pe
 4. **Open in your browser**:
    Navigate to `http://localhost:5173/` (or the URL displayed in your terminal).
 
