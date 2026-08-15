@@ -1,4 +1,4 @@
-export type NavTab = 'Dashboard' | 'Donors' | 'Tasks' | 'Approvals' | 'Reports' | 'Users';
+export type NavTab = 'Dashboard' | 'Donors' | 'Tasks' | 'Vetting' | 'Approvals' | 'Reports' | 'Users';
 
 export type UserRole = 'Marketing' | 'Procurement' | 'Admin' | 'SuperAdmin';
 

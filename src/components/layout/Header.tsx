@@ -5,7 +5,8 @@ import logoImg from '@/assets/sa-harvest-logo.png';
 import {
   LayoutDashboard,
   Users,
-  CheckSquare,
+  NotebookPen,
+  ClipboardCheck,
   CheckCircle2,
   BarChart3,
   UserCheck,
@@ -33,7 +34,8 @@ export const Header: React.FC<HeaderProps> = ({
   const navItems: { label: NavTab; icon: React.ReactNode }[] = [
     { label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: 'Donors', icon: <Users className="w-4 h-4" /> },
-    { label: 'Tasks', icon: <CheckSquare className="w-4 h-4" /> },
+    { label: 'Tasks', icon: <NotebookPen className="w-4 h-4" /> },
+    { label: 'Vetting', icon: <ClipboardCheck className="w-4 h-4" /> },
     { label: 'Approvals', icon: <CheckCircle2 className="w-4 h-4" /> },
     { label: 'Reports', icon: <BarChart3 className="w-4 h-4" /> },
     { label: 'Users', icon: <UserCheck className="w-4 h-4" /> },

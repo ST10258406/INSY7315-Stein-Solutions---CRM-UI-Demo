@@ -60,6 +60,7 @@ export const ReportsPage: React.FC = () => {
   // Dropdown states
   const [dateMenuOpen, setDateMenuOpen] = useState(false);
   const [rmMenuOpen, setRmMenuOpen] = useState(false);
+  const [exportPageOpen, setExportPageOpen] = useState(false);
   const [exportHeroOpen, setExportHeroOpen] = useState(false);
   const [exportStatusOpen, setExportStatusOpen] = useState(false);
   const [exportRegionOpen, setExportRegionOpen] = useState(false);
@@ -72,6 +73,7 @@ export const ReportsPage: React.FC = () => {
   const closeAllMenus = () => {
     setDateMenuOpen(false);
     setRmMenuOpen(false);
+    setExportPageOpen(false);
     setExportHeroOpen(false);
     setExportStatusOpen(false);
     setExportRegionOpen(false);
@@ -129,9 +131,42 @@ export const ReportsPage: React.FC = () => {
       className="flex-1 min-w-0 overflow-y-auto p-6 md:p-8"
       onClick={closeAllMenus}
     >
-      <div className="mb-6">
-        <h1 className="text-3xl font-extrabold text-[var(--ink)] tracking-tight mb-1.5">Reports</h1>
-        <p className="text-sm font-medium text-[var(--muted)]">Track donor engagement and organizational KPIs.</p>
+      <div className="flex items-end gap-6 flex-wrap mb-6">
+        <div>
+          <h1 className="text-3xl font-extrabold text-[var(--ink)] tracking-tight mb-1.5">Reports</h1>
+          <p className="text-sm font-medium text-[var(--muted)]">Track donor engagement and organizational KPIs.</p>
+        </div>
+
+        <div className="ml-auto relative">
+          <Button
+            variant="secondary"
+            onClick={(e) => { e.stopPropagation(); setExportPageOpen(!exportPageOpen); }}
+          >
+            <Download className="w-3.75 h-3.75 text-[var(--ink)]" />
+            <span>Export</span>
+          </Button>
+          {exportPageOpen && (
+            <div
+              className="absolute top-12 right-0 z-30 min-w-[168px] bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg p-1.5 flex flex-col gap-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={handleTriggerToast}
+                className="flex items-center gap-2 w-full px-3 py-2 text-xs font-semibold rounded-lg text-[var(--ink)] hover:bg-[var(--hover)] transition-colors cursor-pointer text-left"
+              >
+                <FileText className="w-3.5 h-3.5 text-[var(--icon)]" />
+                <span>Export as PDF</span>
+              </button>
+              <button
+                onClick={handleTriggerToast}
+                className="flex items-center gap-2 w-full px-3 py-2 text-xs font-semibold rounded-lg text-[var(--ink)] hover:bg-[var(--hover)] transition-colors cursor-pointer text-left"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--icon)]" />
+                <span>Export as Excel</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Section 1: Donors Contacted */}

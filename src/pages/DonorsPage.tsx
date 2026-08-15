@@ -136,8 +136,6 @@ export const DonorsPage: React.FC<DonorsPageProps> = ({
             <span>Export</span>
           </Button>
 
-
-
           <Button variant="default" onClick={onNewDonorClick}>
             <Plus className="w-4 h-4 stroke-[2.2]" />
             <span>New Donor</span>

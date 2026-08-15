@@ -8,10 +8,12 @@ import { DonorsPage } from '@/pages/DonorsPage';
 import { DonorDetailPage } from '@/pages/DonorDetailPage';
 import { ApprovalsPage } from '@/pages/ApprovalsPage';
 import { TasksPage } from '@/pages/TasksPage';
+import { VettingPage } from '@/pages/VettingPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { UsersPage } from '@/pages/UsersPage';
 import { NewDonorPage } from '@/pages/NewDonorPage';
 import { PublicOnboardingPage } from '@/pages/PublicOnboardingPage';
+import { LoginPage } from '@/pages/LoginPage';
 import { LogInteractionModal } from '@/components/modals/LogInteractionModal';
 import { NewTaskModal } from '@/components/modals/NewTaskModal';
 import { EmailDrawer } from '@/components/modals/EmailDrawer';
@@ -26,6 +28,7 @@ import {
 } from '@/data/mockData';
 
 export function AppContent() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<NavTab>('Dashboard');
   const [selectedDonorId, setSelectedDonorId] = useState<string>('foodcorp-sa');
   const [isDetailView, setIsDetailView] = useState(false);
@@ -195,6 +198,11 @@ export function AppContent() {
     setEmails((prev) => [...prev, newEmail]);
   };
 
+  // Landing page: require sign in before entering the CRM
+  if (!isAuthenticated) {
+    return <LoginPage onSignIn={() => setIsAuthenticated(true)} />;
+  }
+
   // If viewing standalone Public Onboarding Form
   if (viewMode === 'public-onboarding') {
     return (
@@ -302,6 +310,8 @@ export function AppContent() {
                 onNavigateToDonor={handleNavigateToDonor}
               />
             )}
+
+            {activeTab === 'Vetting' && <VettingPage />}
 
             {activeTab === 'Reports' && <ReportsPage />}
 
