@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Truck, Eye, EyeOff, Check, Link2, CheckCircle2, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Check, Link2, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import saHarvestLogo from '@/assets/sa-harvest-logo.png';
 
 interface LoginPageProps {
   onSignIn: () => void;
@@ -45,8 +46,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSignIn }) => {
 
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-[#FADF01] flex items-center justify-center shrink-0">
-            <Truck className="w-5.5 h-5.5 text-[#16160F]" strokeWidth={2.4} />
+          <div className="w-11 h-11 rounded-2xl bg-[#FADF01] flex items-center justify-center shrink-0 overflow-hidden">
+            <img src={saHarvestLogo} alt="S.A. Harvest logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col leading-snug">
             <span className="text-[15.5px] font-extrabold tracking-tight text-white">SA Harvest</span>
